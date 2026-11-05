@@ -1,0 +1,19 @@
+{
+  "name": "pitchprfct",
+  "displayName": "PitchPrfct",
+  "version": "0.1.0",
+  "description": "Connect Claude to your PitchPrfct account: manage contacts, send compliant SMS, run campaigns and workflows, and register for 10DLC. Sign in with OAuth; no API key to paste.",
+  "author": {
+    "name": "PitchPrfct",
+    "url": "https://www.pitchprfct.com"
+  },
+  "homepage": "https://www.pitchprfct.com",
+  "license": "MIT",
+  "repository": "https://github.com/PitchPrfct/claude-plugins",
+  "keywords": ["sms", "crm", "10dlc", "campaigns", "messaging", "mcp"],
+  "icon": "./icon.png",
+  "documentationUrl": "https://app.pitchprfct.com/api/docs",
+  "supportUrl": "https://www.pitchprfct.com/contact",
+  "privacyPolicyUrl": "https://www.pitchprfct.com/privacy",
+  "termsOfServiceUrl": "https://www.pitchprfct.com/terms"
+}

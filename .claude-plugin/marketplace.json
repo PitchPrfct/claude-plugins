@@ -1,0 +1,15 @@
+{
+  "name": "pitchprfct-plugins",
+  "description": "Official PitchPrfct plugins for Claude Code",
+  "owner": {
+    "name": "PitchPrfct",
+    "url": "https://www.pitchprfct.com"
+  },
+  "plugins": [
+    {
+      "name": "pitchprfct",
+      "source": "./plugins/pitchprfct",
+      "description": "Run compliant SMS outreach from Claude: contacts, messages, campaigns, workflows and 10DLC registration on your PitchPrfct account."
+    }
+  ]
+}

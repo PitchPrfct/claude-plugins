@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "pitchprfct": {
+      "type": "http",
+      "url": "https://app.pitchprfct.com/api/mcp"
+    }
+  }
+}
