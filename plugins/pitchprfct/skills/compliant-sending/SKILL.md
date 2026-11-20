@@ -44,6 +44,14 @@ server prefix, for example `mcp__pitchprfct__messages_v2_send`.
   registered for 10DLC) and add opt-out wording such as
   "Reply STOP to opt out". `templates_list` and `templates_get` show the account's
   approved wording, so reuse it.
+- The server checks the first message of a workflow or campaign when it goes
+  live for the first time (a draft is published, a campaign that never started
+  is started or scheduled) and when the first message of a published or paused
+  one changes. It refuses with MESSAGE_NOT_COMPLIANT, listing what to fix. A
+  resume or restart is not checked. Use `compliance_check` to test the text
+  first. If `compliance_check` answers 404, the server check is not on for
+  this account yet: check the brand name and the opt-out wording yourself
+  before you save, because nothing will refuse the text.
 - **Later messages** in an ongoing conversation don't need the opt-out line
   unless the user asks for it.
 - Avoid what carriers filter: URL shorteners (bit.ly and similar), misleading

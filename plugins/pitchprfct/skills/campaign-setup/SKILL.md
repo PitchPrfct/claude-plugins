@@ -1,6 +1,6 @@
 ---
 name: campaign-setup
-description: Use when the user wants to text many contacts at once on PitchPrfct, such as launching, scheduling, pausing or resuming an SMS or workflow campaign, choosing its audience, or enrolling contacts in a workflow. Covers readiness checks, audience building, drip pacing, credit estimates and safe launch.
+description: Use when the user wants to text many contacts at once on PitchPrfct, such as launching, scheduling, pausing or resuming an SMS or workflow campaign, building or changing a workflow, choosing its audience, or enrolling contacts in a workflow. Covers readiness checks, audience building, drip pacing, credit estimates and safe launch.
 ---
 
 # Campaign setup
@@ -9,7 +9,8 @@ A campaign sends to a whole audience and costs credits per text. It is the right
 tool for anything beyond a handful of one-off messages. Never loop single sends
 instead. Tool names are the PitchPrfct MCP tools, possibly shown with a server
 prefix. Every message rule in the `compliant-sending` skill applies to each text
-a campaign sends.
+a campaign sends. To have an AI agent answer the replies a campaign or
+workflow gets, use the `agent-builder` skill.
 
 ## 1. Check readiness first (blocking)
 
@@ -30,16 +31,38 @@ missing, stop and say what it is:
 
 - **SMS campaign** (`type: "sms"`): one message to everyone. Needs `message` and,
   for a single sender, `phoneNumber` (E.164, an enabled number).
-- **Workflow campaign** (`type: "workflow"`): enrolls the audience in an existing
+- **Workflow campaign** (`type: "workflow"`): enrolls the audience in a
   multi-step workflow (`workflowId`). Find it with `workflows_list` and check its
-  steps with `workflows_get`. Workflows are designed in the PitchPrfct app. The
-  API can list, activate (`workflows_activate`), pause (`workflows_pause`) and
-  enroll, but not author steps. For a few contacts, `workflows_enroll` or
+  steps with `workflows_get`. For a few contacts, `workflows_enroll` or
   `workflows_bulk_enroll` enroll them directly without a campaign.
 
-The first message must name the business and include opt-out wording ("Reply
-STOP to opt out"). Personalise with merge fields such as `{firstName}`.
-`templates_list` holds the account's approved copy.
+### Building or changing a workflow
+
+- `workflows_create` makes a workflow with its trigger and steps. It is a draft
+  unless you send `status: "active"`.
+- Change one step at a time with `workflows_insert_step`,
+  `workflows_update_step`, `workflows_remove_step` and `workflows_reorder_steps`.
+  Other steps keep their `nodeId`.
+- To turn a draft on, call `workflows_update` with `status: "active"`. A
+  published workflow can start texting contacts at once, so confirm with the
+  user first.
+- `workflows_pause` stops a published workflow. `workflows_resume` starts a
+  paused one again. Both finish in the background.
+
+### First-message wording
+
+The first text a contact gets (the first text step of a workflow, or the
+message of an SMS campaign) must name the business and include opt-out wording
+("Reply STOP to opt out"). Personalise with merge fields such as `{firstName}`.
+`templates_list` holds the account's approved copy. Use `compliance_check` to
+test the text before you save it.
+
+The server checks the first message when it goes live for the first time (a
+draft workflow is published, a campaign that never started is started or
+scheduled) and when the first message of a published or paused one changes. It
+refuses with MESSAGE_NOT_COMPLIANT, listing what to fix. Fix the text and try
+again. A resume is not checked. If `compliance_check` answers 404, the server
+check is not on for this account yet: check the text yourself before you save.
 
 ## 3. Build the audience
 
@@ -87,6 +110,11 @@ estimated finish time, and the estimated credit cost. Get an explicit yes.
 - 402: not enough credits.
 - 403: no subscription, onboarding not finished, or the account is paused. Tell
   the user; don't retry.
+- 422 MESSAGE_NOT_COMPLIANT: the first message fails the compliance check. The
+  error lists each issue and how to fix it. Fix the text with the user, then
+  start again. 422 BRAND_REQUIRED means the account has no 10DLC brand yet.
+- 503 COMPLIANCE_UNAVAILABLE: the check could not run and nothing started.
+  Retry in a few minutes.
 
 ## 6. Run it
 
@@ -99,7 +127,7 @@ estimated finish time, and the estimated credit cost. Get an explicit yes.
 
 ## Never
 
-- Start or resume a campaign without the user's explicit confirmation of the
-  audience size, text and cost.
+- Start or resume a campaign, or publish or resume a workflow, without the
+  user's explicit confirmation of the audience size, text and cost.
 - Re-add contacts the platform filtered or refused as high risk.
 - Schedule sends outside 8:00–21:00 in the recipients' local time.

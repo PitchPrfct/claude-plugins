@@ -2,7 +2,8 @@
 
 The official [PitchPrfct](https://www.pitchprfct.com) plugin marketplace. The `pitchprfct`
 plugin connects Claude to your PitchPrfct account. Claude can then look up contacts, send compliant
-SMS, run campaigns and workflows, and walk you through 10DLC registration.
+SMS, run campaigns and workflows, build and publish AI agents that answer contacts by SMS, and walk
+you through 10DLC registration.
 
 ## Install
 
@@ -20,10 +21,11 @@ access for the account you want Claude to work on. There is no API key to paste.
 
 | Component | What it does |
 | --- | --- |
-| `pitchprfct` MCP server | The PitchPrfct Developer API as tools: contacts, lists, tags, messages, conversations, campaigns, workflows, templates, webhooks, phone numbers, credits and 10DLC. Endpoint: `https://app.pitchprfct.com/api/mcp` (OAuth). |
+| `pitchprfct` MCP server | The PitchPrfct Developer API as tools: contacts, lists, tags, messages, conversations, campaigns, workflows, AI agents, templates, webhooks, phone numbers, credits and 10DLC. Endpoint: `https://app.pitchprfct.com/api/mcp` (OAuth). |
 | `compliant-sending` skill | Checks before any text: sender readiness, opt-outs, first-contact wording, quiet hours (8:00–21:00 in the contact's local time), credits and idempotent retries. |
 | `ten-dlc-registration` skill | Brand, then 10DLC campaign, then attaching phone numbers, including sole-proprietor OTP, vetting, and fixing declined registrations. |
-| `campaign-setup` skill | Readiness checks, building an audience, drip pacing, cost estimates and a confirmed launch for SMS and workflow campaigns. |
+| `campaign-setup` skill | Readiness checks, building an audience, drip pacing, cost estimates and a confirmed launch for SMS and workflow campaigns, and building or changing workflows. |
+| `agent-builder` skill | Building an AI agent that books appointments by SMS: readiness checks, the setup interview, writing its persona, instructions and qualifying questions, test conversations, a confirmed go-live, and following or taking over its conversations. |
 
 ## Documentation
 
