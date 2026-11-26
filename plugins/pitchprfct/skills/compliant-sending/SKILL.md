@@ -76,10 +76,12 @@ server prefix, for example `mcp__pitchprfct__messages_v2_send`.
 
 ## 5. Credits and the send itself
 
-- `credits_balance_api_get_balance` shows SMS credits. 1 credit = 1 SMS segment
-  (160 GSM characters, or fewer with emoji or other Unicode). An MMS costs 3.
-  Estimate segments × recipients before a batch, and tell the user the cost.
-  A send without enough credits fails with 402.
+- `credits_balance_api_get_balance` shows SMS credits. Credits are counted per
+  SMS segment (160 GSM characters, or fewer with emoji or other Unicode), and an
+  MMS costs more than an SMS. The current rates are on
+  https://www.pitchprfct.com/pricing. Never quote a rate from memory. Count the
+  segments and recipients before a batch, and tell the user what the send will
+  use. A send without enough credits fails with 402.
 - Prefer `messages_v2_send`. It is idempotent: generate one `idempotencyKey`
   (a UUID) per intended message and reuse it on every retry, so a timeout never
   sends twice. A 422 means the key was already used for different content, so
@@ -91,7 +93,7 @@ server prefix, for example `mcp__pitchprfct__messages_v2_send`.
 ## 6. Confirm before you send
 
 Before calling a send tool, show the user the recipient, the sender number, the
-exact text, the segment count and the credit cost, and get an explicit yes. For
+exact text and the segment count, and get an explicit yes. For
 more than one recipient, use a campaign (see the `campaign-setup` skill) rather
 than a loop of single sends.
 

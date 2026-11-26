@@ -24,8 +24,10 @@ missing, stop and say what it is:
   cannot send.
 - An active subscription (`billing_api_get_status`).
 - Credits (`credits_balance_api_get_balance`). Starting or resuming a campaign
-  needs at least 50 SMS credits. Beyond that, budget about one credit per
-  160-character segment per contact (an MMS costs 3).
+  needs at least 50 SMS credits. Beyond that, the cost depends on the number of
+  contacts, the message length in segments and whether it is SMS or MMS. The
+  current rates are on https://www.pitchprfct.com/pricing. Never quote a rate
+  from memory.
 
 ## 2. Pick the campaign type
 
